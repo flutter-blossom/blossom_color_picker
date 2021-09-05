@@ -1,0 +1,103 @@
+import 'dart:ui' as ui;
+
+import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
+import 'package:quiver/iterables.dart';
+
+const _cellSize = 15;
+
+const _gridSize = 75.0;
+
+class EyeDropOverlay extends StatelessWidget {
+  final Offset? cursorPosition;
+  final bool touchable;
+
+  //final Color color;
+  final List<Color> colors;
+
+  const EyeDropOverlay({
+    required this.colors,
+    this.cursorPosition,
+    this.touchable = false,
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return cursorPosition != null
+        ? Positioned(
+            left: cursorPosition!.dx - (_gridSize / 2),
+            top: cursorPosition!.dy - (_gridSize / 2) - (touchable ? _gridSize / 2 : 0),
+            width: _gridSize,
+            height: _gridSize,
+            child: _buildZoom(),
+          )
+        : SizedBox();
+  }
+
+  Widget _buildZoom() {
+    return IgnorePointer(
+      ignoring: true,
+      child: Container(
+        // foregroundDecoration: BoxDecoration(
+        //   shape: BoxShape.circle,
+        //   border: Border.all(width: 8, color: colors.isEmpty ? Colors.white : colors[12]),
+        // ),
+        width: _gridSize,
+        height: _gridSize,
+        constraints: BoxConstraints.loose(Size(_gridSize, _gridSize)),
+        child: ClipOval(
+          child: CustomPaint(
+            size: Size(_gridSize, _gridSize),
+            painter: _PixelGridPainter(colors),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _PixelGridPainter extends CustomPainter {
+  final List<Color> colors;
+
+  static const gridSize = 5;
+  static const eyeRadius = 38.0;
+
+  final blackStroke = Paint()
+    ..color = Colors.white
+    ..strokeWidth = 4
+    ..style = PaintingStyle.stroke;
+
+  _PixelGridPainter(this.colors);
+
+  @override
+  void paint(ui.Canvas canvas, ui.Size size) {
+    final stroke = Paint()
+      ..color = Colors.black26
+      ..strokeWidth = 0.5
+      ..style = PaintingStyle.stroke;
+
+    final selectedStroke = Paint()
+      ..color = Colors.white
+      ..strokeWidth = 2
+      ..style = PaintingStyle.stroke;
+
+    for (final color in enumerate(colors)) {
+      final fill = Paint()..color = color.value;
+      final rect = Rect.fromLTWH(
+        (color.index % gridSize).toDouble() * _cellSize,
+        ((color.index ~/ gridSize) % gridSize).toDouble() * _cellSize,
+        _cellSize.toDouble(),
+        _cellSize.toDouble(),
+      );
+      canvas.drawRect(rect, fill);
+      canvas.drawRect(rect, color.index == 12 ? selectedStroke : stroke);
+    }
+
+    canvas.drawCircle(Offset((_gridSize) / 2, (_gridSize) / 2), eyeRadius, blackStroke);
+  }
+
+  @override
+  bool shouldRepaint(_PixelGridPainter oldDelegate) =>
+      !listEquals(oldDelegate.colors, colors);
+}
