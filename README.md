@@ -14,7 +14,6 @@ ColorPicker(
 ),
 
 // for opacity slider
-
 OpacitySlider(
   opacity: opacity,
   selectedColor: color,
