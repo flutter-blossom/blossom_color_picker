@@ -1,7 +1,7 @@
 # blossom_color_picker
 
 A color picker combining [flutter_hsvcolor_picker](https://github.com/fluttercandies/flutter_hsvcolor_picker) by [fluttercandies](https://github.com/fluttercandies) and [cyclop](https://github.com/rxlabz/cyclop) by [rxlabz](https://github.com/rxlabz).
-Made for (Flutter Blossom)(https://github.com/flutter-blossom/flutter_blossom).
+Made for (Flutter Blossom)[https://github.com/flutter-blossom/flutter_blossom].
 
 ## Getting Started
 
