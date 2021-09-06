@@ -180,14 +180,14 @@ class _WheelPainter extends CustomPainter {
       radio - _WheelPainter.strokeWidth,
       Paint()
         ..style = PaintingStyle.stroke
-        ..color = Colors.grey,
+        ..color = Colors.grey.withOpacity(0.4),
     );
     canvas.drawCircle(
       center,
       radio + _WheelPainter.strokeWidth,
       Paint()
         ..style = PaintingStyle.stroke
-        ..color = Colors.grey,
+        ..color = Colors.grey.withOpacity(0.4),
     );
 
     // Palette

@@ -10,18 +10,15 @@ import 'package:blossom_color_picker/blossom_color_picker.dart';
 
 // for colorPicker
 ColorPicker(
-  onColor: onChanged,
+  color: Colors.blue,
+  onColor: onColor,
 ),
 
 // for opacity slider
 OpacitySlider(
   opacity: opacity,
   selectedColor: color,
-  onChange: (o) {
-    setState(() {
-      opacity = o;
-    });
-  },
+  onChange: onChange,
 ),
 
 ```

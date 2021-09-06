@@ -45,7 +45,7 @@ class _HexPickerState extends State<HexPicker> {
       children: <Widget>[
         // Text
         Padding(
-          padding: const EdgeInsets.only(left: 4, top: 2),
+          padding: const EdgeInsets.only(left: 4, top: 2, right: 1),
           child: Text(
             '#',
             style: Theme.of(context).textTheme.headline6?.copyWith(
@@ -56,8 +56,8 @@ class _HexPickerState extends State<HexPicker> {
 
         // TextField
         Container(
-          width: 70,
-          height: 25,
+          width: 65,
+          height: 24,
           decoration: BoxDecoration(
             color:
                 widget.backgroundColor?.withOpacity(0.2) ?? Colors.grey.withOpacity(0.2),
@@ -68,7 +68,7 @@ class _HexPickerState extends State<HexPicker> {
               padding: const EdgeInsets.symmetric(horizontal: 4.0),
               child: widget.textField?.call(widget._controller.text) ??
                   TextField(
-                    style: Theme.of(context).textTheme.headline5?.copyWith(fontSize: 18),
+                    style: Theme.of(context).textTheme.headline5?.copyWith(fontSize: 16),
                     controller: widget._controller,
                     onSubmitted: textOnSubmitted,
                     decoration: const InputDecoration.collapsed(hintText: 'hex code'),

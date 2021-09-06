@@ -35,7 +35,7 @@ class _EyeDropperModel {
 class EyeDrop extends InheritedWidget {
   static _EyeDropperModel data = _EyeDropperModel();
 
-  EyeDrop({required Widget child})
+  EyeDrop({required Widget child, void Function()? onEscape})
       : super(
           child: RepaintBoundary(
             key: captureKey,
@@ -48,6 +48,7 @@ class EyeDrop extends InheritedWidget {
                   data.eyeOverlayEntry!.remove();
                   data.eyeOverlayEntry = null;
                   data.onColorSelected = null;
+                  onEscape?.call();
                 }
               },
               child: Listener(
@@ -101,8 +102,8 @@ class EyeDrop extends InheritedWidget {
     data.touchable = touchable;
 
     if (data.snapshot != null) {
-      data.hoverColor = getPixelColor(data.snapshot!, offset);
-      data.hoverColors = getPixelColors(data.snapshot!, offset);
+      data.hoverColor = getPixelColor(data.snapshot!, offset - Offset(2, 47));
+      data.hoverColors = getPixelColors(data.snapshot!, offset - Offset(2, 47));
     }
   }
 

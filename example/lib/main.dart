@@ -50,6 +50,7 @@ class _MyHomePageState extends State<MyHomePage> {
           ),
           Divider(),
           ColorPicker(
+            color: Colors.blue,
             onColor: onChanged,
           ),
           OpacitySlider(

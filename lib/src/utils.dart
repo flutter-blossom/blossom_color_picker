@@ -35,14 +35,12 @@ extension Utils on Color {
 
   Color withLightness(double value) => hsl.withLightness(value).toColor();
 
-  List<Color> getShades(int stepCount, {bool skipFirst = true}) =>
-      List.generate(
+  List<Color> getShades(int stepCount, {bool skipFirst = true}) => List.generate(
         stepCount,
         (index) {
           return hsl
               .withLightness(1 -
-                  ((index + (skipFirst ? 1 : 0)) /
-                      (stepCount - (skipFirst ? -1 : 1))))
+                  ((index + (skipFirst ? 1 : 0)) / (stepCount - (skipFirst ? -1 : 1))))
               .toColor();
         },
       );
@@ -68,12 +66,14 @@ List<Color> getPixelColors(img.Image image, Offset offset) => List.generate(
       ),
     );
 
-Color getPixelColor(img.Image image, Offset offset) => (offset.dx >= 0 &&
-        offset.dy >= 0 &&
-        offset.dx < image.width &&
-        offset.dy < image.height)
-    ? abgr2Color(image.getPixel(offset.dx.toInt(), offset.dy.toInt()))
-    : Color(0x00000000);
+Color getPixelColor(img.Image image, Offset offset) {
+  return (offset.dx >= 0 &&
+          offset.dy >= 0 &&
+          offset.dx < image.width &&
+          offset.dy < image.height)
+      ? abgr2Color(image.getPixel(offset.dx.toInt(), offset.dy.toInt()))
+      : Color(0x00000000);
+}
 
 ui.Offset _offsetFromIndex(int index, int numColumns) => Offset(
       (index % numColumns).toDouble(),
@@ -89,12 +89,10 @@ Color abgr2Color(int value) {
   return Color.fromARGB(a, r, g, b);
 }
 
-Future<img.Image?> repaintBoundaryToImage(
-    RenderRepaintBoundary renderer) async {
+Future<img.Image?> repaintBoundaryToImage(RenderRepaintBoundary renderer) async {
   try {
     final rawImage = await renderer.toImage(pixelRatio: 1);
-    final byteData =
-        await rawImage.toByteData(format: ui.ImageByteFormat.rawRgba);
+    final byteData = await rawImage.toByteData(format: ui.ImageByteFormat.rawRgba);
     final pngBytes = byteData!.buffer.asUint8List();
     return img.Image.fromBytes(rawImage.width, rawImage.height, pngBytes);
   } catch (err) {
