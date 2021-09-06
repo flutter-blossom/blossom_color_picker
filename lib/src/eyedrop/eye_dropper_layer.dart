@@ -34,37 +34,41 @@ class _EyeDropperModel {
 
 class EyeDrop extends InheritedWidget {
   static _EyeDropperModel data = _EyeDropperModel();
+  bool isActive = false;
 
   EyeDrop({required Widget child, void Function()? onEscape})
       : super(
           child: RepaintBoundary(
             key: captureKey,
-            child: RawKeyboardListener(
-              focusNode: FocusNode(),
-              autofocus: true,
-              onKey: (e) {
-                if (data.eyeOverlayEntry != null &&
-                    e.logicalKey == LogicalKeyboardKey.escape) {
-                  data.eyeOverlayEntry!.remove();
-                  data.eyeOverlayEntry = null;
-                  data.onColorSelected = null;
-                  onEscape?.call();
-                }
-              },
-              child: Listener(
-                onPointerMove: (details) => _onHover(
-                  details.position,
-                  details.kind == PointerDeviceKind.touch,
+            child: Builder(builder: (context) {
+              return RawKeyboardListener(
+                focusNode: FocusNode(),
+                autofocus: true,
+                onKey: (e) {
+                  if (data.eyeOverlayEntry != null &&
+                      e.logicalKey == LogicalKeyboardKey.escape) {
+                    data.eyeOverlayEntry!.remove();
+                    data.eyeOverlayEntry = null;
+                    data.onColorSelected = null;
+                    onEscape?.call();
+                    EyeDrop.of(context).isActive = false;
+                  }
+                },
+                child: Listener(
+                  onPointerMove: (details) => _onHover(
+                    details.position,
+                    details.kind == PointerDeviceKind.touch,
+                  ),
+                  // ignore: deprecated_member_use
+                  onPointerHover: (details) => _onHover(
+                    details.position,
+                    details.kind == PointerDeviceKind.touch,
+                  ),
+                  onPointerUp: (details) => _onPointerUp(details.position),
+                  child: child,
                 ),
-                // ignore: deprecated_member_use
-                onPointerHover: (details) => _onHover(
-                  details.position,
-                  details.kind == PointerDeviceKind.touch,
-                ),
-                onPointerUp: (details) => _onPointerUp(details.position),
-                child: child,
-              ),
-            ),
+              );
+            }),
           ),
         );
 
@@ -108,6 +112,7 @@ class EyeDrop extends InheritedWidget {
   }
 
   void capture(BuildContext context, ValueChanged<Color> onColorSelected) async {
+    EyeDrop.of(context).isActive = true;
     final renderer =
         captureKey.currentContext?.findRenderObject() as RenderRepaintBoundary?;
 

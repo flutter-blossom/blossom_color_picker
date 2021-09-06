@@ -91,13 +91,16 @@ class _ColorPickerState extends State<ColorPicker> {
                 child: HexPicker(
                   backgroundColor: widget.hexBackgroundColor,
                   color: (color?.toColor() ?? widget.color).withOpacity(opacity),
-                  onChanged: (v) =>
-                      super.setState(() => onChanged(HSVColor.fromColor(v))),
+                  onChanged: (v) {
+                    super.setState(() => onChanged(HSVColor.fromColor(v)));
+                    _preColor = color?.toColor() ?? widget.color;
+                    widget.onColor(color?.toColor() ?? widget.color);
+                  },
                 ),
               ),
               EyedropperButton(
                 icon: widget.eyeDropIcon ?? Icons.colorize,
-                iconColor: widget.eyeDropColor ?? Colors.blue,
+                iconColor: widget.eyeDropColor ?? Colors.grey,
                 backgroundColor: widget.eyeDropBackgroundColor,
                 onActivate: () {
                   widget.onEyeDrop?.call();

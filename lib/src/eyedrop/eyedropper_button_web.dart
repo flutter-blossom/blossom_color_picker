@@ -11,30 +11,53 @@ class EyedropperButton extends StatelessWidget {
 
   /// icon color, default : [Colors.blueGrey]
   final Color iconColor;
+  final Color? backgroundColor;
 
   /// color selection callback
   final ValueChanged<Color> onColor;
+  final void Function() onActivate;
 
   /// verify if the button is in a CanvasKit context
   bool get eyedropEnabled => js.context['flutterCanvasKit'] != null;
 
-  const EyedropperButton({
+  EyedropperButton({
     required this.onColor,
+    required this.onActivate,
     this.icon = Icons.colorize,
+    this.backgroundColor,
     this.iconColor = Colors.blueGrey,
     Key? key,
   }) : super(key: key);
 
+  bool isActive = false;
+
   @override
   Widget build(BuildContext context) => Container(
-        decoration:
-            BoxDecoration(color: Colors.white24, shape: BoxShape.circle),
-        child: IconButton(
-          icon: Icon(Icons.colorize),
-          color: iconColor,
-          tooltip: 'test',
-          onPressed:
-              eyedropEnabled ? () => _onEyeDropperRequest(context) : null,
+        decoration: BoxDecoration(color: Colors.white24, shape: BoxShape.circle),
+        child: InkWell(
+          onTap: () {
+            if (!isActive) {
+              onActivate();
+              _onEyeDropperRequest(context);
+            }
+            isActive = !isActive;
+          },
+          child: Container(
+            decoration: BoxDecoration(
+              border: Border.all(
+                color: Colors.grey.withOpacity(0.2),
+              ),
+              borderRadius: BorderRadius.circular(25),
+              color: backgroundColor,
+            ),
+            child: Padding(
+              padding: const EdgeInsets.all(4.0),
+              child: Icon(
+                icon,
+                color: iconColor,
+              ),
+            ),
+          ),
         ),
       );
 

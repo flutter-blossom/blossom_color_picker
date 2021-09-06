@@ -1,6 +1,6 @@
 name: blossom_color_picker
 description: A color picker combining flutter_hsvcolor_picker by fluttercandies and cyclop by rxlabz.
-version: 1.1.0
+version: 1.2.0
 homepage: https://github.com/flutter-blossom/blossom_color_picker
 
 environment:

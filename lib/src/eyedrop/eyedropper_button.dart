@@ -4,7 +4,6 @@ import 'eye_dropper_layer.dart';
 
 /// an eyeDropper standalone button
 class EyedropperButton extends StatelessWidget {
-  /// customisable icon ( default : [Icons.colorize] )
   final IconData icon;
 
   /// icon color, default : [Colors.blueGrey]
@@ -15,7 +14,7 @@ class EyedropperButton extends StatelessWidget {
   final ValueChanged<Color> onColor;
   final void Function() onActivate;
 
-  EyedropperButton({
+  const EyedropperButton({
     required this.onColor,
     required this.onActivate,
     this.icon = Icons.colorize,
@@ -24,32 +23,30 @@ class EyedropperButton extends StatelessWidget {
     Key? key,
   }) : super(key: key);
 
-  bool isActive = false;
-
   @override
   Widget build(BuildContext context) => Container(
         decoration: BoxDecoration(color: Colors.white24, shape: BoxShape.circle),
         child: InkWell(
           onTap: () {
-            if (!isActive) {
+            if (!EyeDrop.of(context).isActive) {
               onActivate();
               _onEyeDropperRequest(context);
             }
-            isActive = !isActive;
           },
           child: Container(
             decoration: BoxDecoration(
               border: Border.all(
-                color: Colors.grey.withOpacity(0.2),
+                color: Colors.grey.withOpacity(0.15),
               ),
               borderRadius: BorderRadius.circular(25),
               color: backgroundColor,
             ),
             child: Padding(
-              padding: const EdgeInsets.all(4.0),
+              padding: const EdgeInsets.all(6.0),
               child: Icon(
                 icon,
                 color: iconColor,
+                size: 16,
               ),
             ),
           ),
